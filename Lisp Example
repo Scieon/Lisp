@@ -42,7 +42,41 @@
 
 
 (defun push-unique(lst e)
-                   (cond ((is-member lst e) lst)
-                         ((t (append lst e)))))                 
+                   (if (is-member lst e)
+                       lst
+                     (append lst (list e))))
+
+
+
+ (defun firoBAD (g e)
+                  (if (null g) 
+                      nil
+                    (if (is-member(car g) e)
+                        (cdr g)
+                      (cons (car g)(firo (cdr g) e)))))
+
+(defun firo (g e)
+                   (if (null g)
+                       nil
+                     (if (is-member(car g) e)
+                         (firo (cdr g) e)
+                       (cons (car g) (firo (cdr g) e)))))
+
+
+
+ (defun filter-visited (g e)
+                  (if (null g) 
+                      nil
+                    (if (is-member(car g) e)
+                        (cdr g)
+                      (cons (car g)(filter-visited (cdr g) e))))) ;(filter-visited '((a 1 b) (b 2 c)(c 3 d)) 'a)
+
+
+(defun remove-from-lst(lst el)
+                   (cond ((null lst) nil)
+                         ((equal(car lst) el) (remove-from-lst(cdr lst) el))
+                         (t(cons(car lst)(remove-from-lst(cdr lst)el)))))
+
+
 
  

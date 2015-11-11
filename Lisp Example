@@ -1,0 +1,48 @@
+
+(defparameter *student-names* "Anh Khoi")
+
+
+(defparameter *student-surname* "Vu-Nguyen")
+
+
+(defparameter *student-id* 27501072)
+
+
+(defun make-graph()
+	(cdr nil))
+
+(defun is-triple(l)
+                  (if (null l)
+                      nil
+                    (equal (length l) 3)))
+
+
+;In case we need to define length
+;(defun length2(lst)
+                   ;(cond ((null lst) 0)
+                       ; (t (+ 1 (length2(cdr lst))))))
+
+
+ (defun triple-has-nodes(l e)
+                   (if (is-triple l)
+                       (if (equal (car l)e)
+                           t
+                         (if (equal (car (cdr l)) e)
+                             t
+                           (if (equal (car (cdr (cdr l))) e)
+                               t
+                             nil)))))
+
+
+(defun is-member(lst e)
+              (cond ((null lst) nil)
+                    ((equal (car lst) e) t)
+                    (t (is-member(cdr lst) e))))
+
+
+
+(defun push-unique(lst e)
+                   (cond ((is-member lst e) lst)
+                         ((t (append lst e)))))                 
+
+ 

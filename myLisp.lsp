@@ -51,12 +51,7 @@
        
 
 
- (defun firoBAD (g e)
-                  (if (null g) 
-                      nil
-                    (if (is-member(car g) e)
-                        (cdr g)
-                      (cons (car g)(firo (cdr g) e)))))
+
 
 (defun firo (g e)
                    (if (null g)
@@ -65,20 +60,45 @@
                          (firo (cdr g) e)
                        (cons (car g) (firo (cdr g) e)))))
 
+(defun firo2(g e)
+  (if (or (null g) (not (listp g))) ;if g is the empty list or g is not even a list, return nil.
+      nil
+    (if (is-member(car g) e)
+        (firo2 (cdr g) e)
+      (cons (car g)(firo2(cdr g) e)))))
 
 
- (defun filter-visited (g e)
-                  (if (null g) 
-                      nil
-                    (if (is-member(car g) e)
-                        (cdr g)
-                      (cons (car g)(filter-visited (cdr g) e))))) ;(filter-visited '((a 1 b) (b 2 c)(c 3 d)) 'a)
+(defun alice (g e)
+  (if (null e)
+      g
+    (alice (firo2 g (car e)) (cdr e))))
+
+(defun teste (g e)
+  (firo2 g (car e))) ; '((a 1 b) (c 2 d) (e 3 f) (g 4 h)) '(e g))
 
 
-(defun remove-from-lst(lst el)
-                   (cond ((null lst) nil)
-                         ((equal(car lst) el) (remove-from-lst(cdr lst) el))
-                         (t(cons(car lst)(remove-from-lst(cdr lst)el)))))
+(defun teste2 (lst e)
+  (len (teste lst (car e))))
+
+
+
+(defun removal(lst el)
+  (cond ((or (not (listp lst)) (null lst)) nil) ;if g is the empty list or g is not even a list, return nil.
+        ((equal(car lst) el)(removal(cdr lst) el))
+        (t(cons (car lst)(removal(cdr lst)el)))))
+
+
+ ; (if (or (not (listp lst))(null lst))
+
+(defun remove-all-from-lst (lst1 lst2)
+  (if (null lst2)
+      lst1
+    (remove-all-from-lst(removal lst1 (car lst2)) (cdr lst2))))
+
+
+
+
+
 
 (defun triple-first (triple)
   (if (is-triple triple)
@@ -95,7 +115,7 @@
         (t(append (append (list (triple-first (car g))) (list (triple-third (car g)))) (triple-to-els (cdr g))))))
 
 
-;(append (append (list 'a) (list 'b)) (list 'c))
+
 
 
 

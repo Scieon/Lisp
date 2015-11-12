@@ -10,11 +10,12 @@
 
 (defun make-graph()
 	(cdr nil))
+	;(cons nil nil)
 
 (defun is-triple(l)
-                  (if (null l)
-                      nil
-                    (equal (length l) 3)))
+  (if(null l)
+      nil
+    (equal (length l) 3)))
 
 
 ;In case we need to define length
@@ -23,29 +24,31 @@
                        ; (t (+ 1 (length2(cdr lst))))))
 
 
- (defun triple-has-nodes(l e)
-                   (if (is-triple l)
-                       (if (equal (car l)e)
-                           t
-                         (if (equal (car (cdr l)) e)
-                             t
-                           (if (equal (car (cdr (cdr l))) e)
-                               t
-                             nil)))))
-
+(defun triple-has-nodes (l e)
+  (if(is-triple l)
+      (if (equal (car l) e)
+          t
+        (if (equal (car (cdr l)) e)
+            t
+          (if (equal (car (cdr (cdr l))) e)
+              t
+            nil)))))
 
 (defun is-member(lst e)
-              (cond ((null lst) nil)
-                    ((equal (car lst) e) t)
-                    (t (is-member(cdr lst) e))))
+  (cond ((null lst) nil)
+        ((equal (car lst) e) t)
+        (t (is-member(cdr lst) e))))
+
+
 
 
 
 (defun push-unique(lst e)
-                   (if (is-member lst e)
-                       lst
-                     (append lst (list e))))
+  (if (is-member lst e)
+      lst
+    (append lst (list e))))
 
+       
 
 
  (defun firoBAD (g e)
@@ -77,6 +80,23 @@
                          ((equal(car lst) el) (remove-from-lst(cdr lst) el))
                          (t(cons(car lst)(remove-from-lst(cdr lst)el)))))
 
+(defun triple-first (triple)
+  (if (is-triple triple)
+      (car triple)
+    nil))
+
+(defun  triple-third (triple)
+  (if (is-triple triple)
+      (car (cdr (cdr triple)))
+    nil))
+
+(defun triple-to-els(g)
+  (cond ((null g) nil)
+        (t(append (append (list (triple-first (car g))) (list (triple-third (car g)))) (triple-to-els (cdr g))))))
 
 
- 
+;(append (append (list 'a) (list 'b)) (list 'c))
+
+
+
+

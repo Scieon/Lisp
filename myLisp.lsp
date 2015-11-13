@@ -116,6 +116,22 @@
 
 
 
+(defun check(g q v c)
+  (if (null g)
+      nil
+    (if (not (is-member (car g) c))
+        (check (cdr g) g v c)
+      (if (unique-match(triple-first (car g)) q v c)
+          (triple-first(car g))
+        (if(unique-match(triple-third(car g)) q v c) 
+            (triple-third(car g))
+            (check (cdr g) q v c))))))
+
+(defun unique-match(node q v c)
+  (if (and (not (equal node c))(not(is-member q node)) (not(is-member v node)))
+      t
+    nil))
+
 
 
 

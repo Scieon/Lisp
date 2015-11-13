@@ -1,0 +1,24 @@
+
+CL-USER 65 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(a) '() 'a)
+B
+
+CL-USER 66 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(a b) '() 'a)
+C
+
+CL-USER 67 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(a b c) '() 'a)
+NIL
+
+CL-USER 68 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( b c) '(a) 'b)
+D
+
+CL-USER 69 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( b c d) '(a) 'b)
+NIL
+
+CL-USER 70 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( c d) '(a b) 'c)
+NIL
+
+CL-USER 71 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( d) '(a b c) 'd)
+E
+
+CL-USER 72 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(e) '(a b c d) 'e)
+NIL

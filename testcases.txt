@@ -20,5 +20,8 @@ NIL
 CL-USER 71 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( d) '(a b c) 'd)
 E
 
-CL-USER 72 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(e) '(a b c d) 'e)
+CL-USER 72 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '( d e) '(a b c) 'd)
+NIL
+
+CL-USER 73 : 5 > (check '((a 1 b) (a 2 c) (c 4 d) (b 3 d) (d 5 e)) '(e) '(a b c d) 'e)
 NIL

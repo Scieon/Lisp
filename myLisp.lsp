@@ -120,18 +120,49 @@
   (if (null g)
       nil
     (if (not (is-member (car g) c))
-        (check (cdr g) g v c)
+        (check (cdr g) q v c)
       (if (unique-match(triple-first (car g)) q v c)
-          (triple-first(car g))
+         (triple-first(car g))
         (if(unique-match(triple-third(car g)) q v c) 
-            (triple-third(car g))
-            (check (cdr g) q v c))))))
+           (triple-third(car g))
+          (check (cdr g) q v c))))))
 
 (defun unique-match(node q v c)
   (if (and (not (equal node c))(not(is-member q node)) (not(is-member v node)))
       t
     nil))
 
+
+(defun bfs2 (g e q v c) ;bad
+  (if(null q)
+      c
+    (if (equal e c)
+        (append v (list c))
+      (if (not (equal nil (check g q v c)))
+          (bfs2 g e (push-unique q (check g q v c)) v c)
+        (bfs2 g e (cdr q) (push-unique v (cdr q)) (cdr q))))));handle length
+
+(defun bfs3 (g e q v c) ;good
+  (if (equal e c)
+     (push-unique v c)
+    (if (null (check g q v c))
+        (bfs3 g e (cdr q) (push-unique v (car q)) (car q))
+      (bfs3 g e (push-unique q (check g q v c)) v c))))
+
+(defun bfs(g e q v c)
+  (if (equal e c)
+      (push-unique v c)
+    (if (and (null q) (null(check g q v c)))
+        nil
+      (if(null(check g q v c))
+          (bfs g e (cdr q)(push-unique v (car q))(car q))
+        (bfs g e (push-unique q (check g q v c)) v c)))))
+
+
+   
+
+    
+            
 
 
 

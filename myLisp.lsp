@@ -1,121 +1,93 @@
-
-(defparameter *student-names* "Anh Khoi")
-
-
-(defparameter *student-surname* "Vu-Nguyen")
-
-
-(defparameter *student-id* 27501072)
-
-
+;; 2.
 (defun make-graph()
 	(cdr nil))
 	;(cons nil nil)
 
+;; 3.
 (defun is-triple(l)
-  (if(null l)
+  (if(or(not(listp l))(null l))
       nil
     (equal (length l) 3)))
 
+;; Auxiliary Function
+(defun length2(lst)
+  (cond ((null lst) 0)
+        (t(+ 1 (length2(cdr lst))))))
 
-;In case we need to define length
-;(defun length2(lst)
-                   ;(cond ((null lst) 0)
-                       ; (t (+ 1 (length2(cdr lst))))))
+;; 4.
+(defun triple-has-node(l e) ;This one looks more aesthetic
+  (if (is-triple l)
+      (cond ((equal (car l) e) t)
+            ((equal (car (cdr l )) e) t)
+            ((equal (car (cdr (cdr l))) e) t)
+            (t nil))
+    nil))
 
-
-(defun triple-has-nodes (l e)
-  (if(is-triple l)
-      (if (equal (car l) e)
-          t
-        (if (equal (car (cdr l)) e)
-            t
-          (if (equal (car (cdr (cdr l))) e)
-              t
-            nil)))))
-
+;; 5.
 (defun is-member(lst e)
-  (cond ((null lst) nil)
+  (cond ((or(null lst)(not (listp lst))) nil)
         ((equal (car lst) e) t)
         (t (is-member(cdr lst) e))))
 
-
-
-
-
+;; 6.
 (defun push-unique(lst e)
-  (if (is-member lst e)
-      lst
-    (append lst (list e))))
-
-       
+  (cond ((not (listp lst)) nil)
+        ((is-member lst e) lst)
+        (t(append lst (list e)))))
 
 
-
-
-(defun firo (g e)
-                   (if (null g)
-                       nil
-                     (if (is-member(car g) e)
-                         (firo (cdr g) e)
-                       (cons (car g) (firo (cdr g) e)))))
-
-(defun firo2(g e)
-  (if (or (null g) (not (listp g))) ;if g is the empty list or g is not even a list, return nil.
+;; 7.
+(defun filter-visited (g e)
+  (if (or (not(listp g))(null g))
       nil
-    (if (is-member(car g) e)
-        (firo2 (cdr g) e)
-      (cons (car g)(firo2(cdr g) e)))))
+    (if (is-member (car g) e)
+        (filter-visited (cdr g) e)
+      (cons (car g) (filter-visited(cdr g) e)))))
 
+;; 8.
+(defun filter-all-visited (g els)
+  (cond ((or (not (listp g)) (null g)) nil)
+        ((null els) g)
+        (t (filter-all-visited (filter-visited g (car els)) (cdr els)))))
 
-(defun alice (g e)
-  (if (null e)
-      g
-    (alice (firo2 g (car e)) (cdr e))))
-
-(defun teste (g e)
-  (firo2 g (car e))) ; '((a 1 b) (c 2 d) (e 3 f) (g 4 h)) '(e g))
-
-
-(defun teste2 (lst e)
-  (len (teste lst (car e))))
-
-
-
-(defun removal(lst el)
+;; 9.
+(defun remove-from-lst(lst el)
   (cond ((or (not (listp lst)) (null lst)) nil) ;if g is the empty list or g is not even a list, return nil.
-        ((equal(car lst) el)(removal(cdr lst) el))
-        (t(cons (car lst)(removal(cdr lst)el)))))
+        ((equal(car lst) el)(remove-from-lst(cdr lst) el))
+        (t(cons (car lst)(remove-from-lst(cdr lst)el)))))
 
 
- ; (if (or (not (listp lst))(null lst))
-
+;; 10.
 (defun remove-all-from-lst (lst1 lst2)
   (if (null lst2)
       lst1
-    (remove-all-from-lst(removal lst1 (car lst2)) (cdr lst2))))
+    (remove-all-from-lst(remove-from-lst lst1 (car lst2)) (cdr lst2))))
 
 
-
-
-
-
+;; 11.
 (defun triple-first (triple)
   (if (is-triple triple)
       (car triple)
     nil))
 
+
+;; 12.
 (defun  triple-third (triple)
   (if (is-triple triple)
       (car (cdr (cdr triple)))
     nil))
 
+
+;; 13.
 (defun triple-to-els(g)
   (cond ((null g) nil)
         (t(append (append (list (triple-first (car g))) (list (triple-third (car g)))) (triple-to-els (cdr g))))))
 
 
 
+;;;; Bonus Functions
+
+;;; This function attempts to find the next node in a BFS search and returns it only if it has not yet been visited or on the search queue.
 (defun check(g q v c)
   (if (null g)
       nil
@@ -127,27 +99,13 @@
            (triple-third(car g))
           (check (cdr g) q v c))))))
 
+
+;;; This function determines if the next node found in a BFS is unique to the search queue or the visited list.
 (defun unique-match(node q v c)
   (if (and (not (equal node c))(not(is-member q node)) (not(is-member v node)))
       t
     nil))
 
-
-(defun bfs2 (g e q v c) ;bad
-  (if(null q)
-      c
-    (if (equal e c)
-        (append v (list c))
-      (if (not (equal nil (check g q v c)))
-          (bfs2 g e (push-unique q (check g q v c)) v c)
-        (bfs2 g e (cdr q) (push-unique v (cdr q)) (cdr q))))));handle length
-
-(defun bfs3 (g e q v c) ;good
-  (if (equal e c)
-     (push-unique v c)
-    (if (null (check g q v c))
-        (bfs3 g e (cdr q) (push-unique v (car q)) (car q))
-      (bfs3 g e (push-unique q (check g q v c)) v c))))
 
 (defun bfs(g e q v c)
   (if (equal e c)
